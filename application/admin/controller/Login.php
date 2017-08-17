@@ -65,9 +65,6 @@ class login extends Controller
     }
     public function Login()
     {
-        $str='时刻的减肥路上看见的法律会计师';
-        $bb=msubstr($str,0,5,'utf-8',false);
-        var_dump($bb);exit;
         if ($this->request->isPost()) {
             $data = $this->request->only(['username', 'password', 'verify']);
             $validate_result=model('Admin')->login($data);
