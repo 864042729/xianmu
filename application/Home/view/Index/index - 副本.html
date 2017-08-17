@@ -1,0 +1,44 @@
+<html>
+<head>
+
+</head>
+<boy>
+    <div>
+        <form action="" method="post" id="from1">
+            <input type="file" name="img" id="file"/>
+            <input class="text Validform_error" type="text" name="username" datatype="*" nullmsg="请填写用户名">
+            <span class="Validform_checktip"></span>
+            <img arc="" height="150" width="150" id="bb_img"/>
+            <button type="submit">提交</button>
+        </form>
+    </div>
+</boy>
+
+<script type="text/javascript" charset="utf-8" src="{:__HJS__}/jquery.min.js"></script>
+<script>
+    //    function aa(){
+    //$(function() {
+    //    $('#add_more').blur(function(){
+    //        var fileObj = document.getElementById("add_more").files[0];
+    //        alert(fileObj)
+    //    })
+    //})
+    $(function() {
+        $('#from1').submit(function(){
+            $.ajax({
+                url:'{:url("Index/index")}',
+                data:$("#form1").serializeArray(),
+//                data:{'username':'123123'},
+                type:'post',
+                dataType:'json',
+                success:function(res){
+                    alert(res);
+                    return false;
+                }
+            })
+            return false;
+        })
+    })
+
+</script>
+</html>
