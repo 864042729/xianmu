@@ -19,7 +19,7 @@ return [
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace
-    'app_trace'              => true,
+    'app_trace'              => false,
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -43,7 +43,7 @@ return [
     // 是否开启多语言
     'lang_switch_on'         => false,
     // 默认全局过滤方法 用逗号分隔多个
-    'default_filter'         => '',
+    'default_filter'         => 'htmlspecialchars,trim',
     // 默认语言
     'default_lang'           => 'zh-cn',
     // 应用类库后缀
@@ -56,7 +56,7 @@ return [
     // +----------------------------------------------------------------------
 
     // 默认模块名
-    'default_module'         => 'index',
+    'default_module'         => 'Home',
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名
@@ -114,8 +114,6 @@ return [
     'request_cache'          => false,
     // 请求缓存有效期
     'request_cache_expire'   => null,
-    // 全局请求缓存排除规则
-    'request_cache_except'   => [],
 
     // +----------------------------------------------------------------------
     // | 模板设置
@@ -141,12 +139,10 @@ return [
     ],
 
     // 视图输出字符串内容替换
-    'view_replace_str'       => [
-        '__ADMIN_TMPL__'=>'/resources/admin/resources',
-        '__JS__'=>'/resources/static/js',
-        '__CSS__'=>'/resources/static/css'
-
-
+    'view_replace_str'  =>  [
+        '__PUBLIC__'=>'/public/',
+        '__PUBLICINDEX__'=>'/static/ceshi/',
+        '__ROOT__' => '/',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
@@ -162,7 +158,7 @@ return [
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',
     // 显示错误信息
-    'show_error_msg'         => false,
+    'show_error_msg'         => true,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
@@ -244,19 +240,11 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
-    // 验证码配置
-    'captcha' => [
-        // 验证码字符集合
-        'codeSet'  => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY',
-        // 验证码字体大小(px)
-        'fontSize' => 20,
-        // 是否画混淆曲线
-        'useCurve' => true,
-        // 验证码位数
-        'length'   =>4,
-        // 验证成功后是否重置
-        'reset'    => true,
-        'imageW' => 170,
-        'imageH' => 43,
+
+    'captcha'  => [
+        // 字体大小
+        'fontSize' => 35,
+        // 验证码长度（位数）
+        'length'   => 4,
     ],
 ];
