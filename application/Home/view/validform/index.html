@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Apple devices fullscreen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Apple devices fullscreen -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>后台管理系统 - 您需要登录后才可以使用本功能</title>
+
+    <style>
+        /*==========以下部分是Validform必须的===========*/
+        .Validform_checktip{
+            margin-left:8px;
+            line-height:20px;
+            height:20px;
+            overflow:hidden;
+            color:#999;
+            font-size:12px;
+        }
+        .Validform_right{
+            color:#71b83d;
+            padding-left:20px;
+            background:url(__ROOT__static/home/images/right.png) no-repeat left center;
+        }
+        .Validform_wrong{
+            color:red;
+            padding-left:20px;
+            white-space:nowrap;
+            background:url(__ROOT__static/home/images/error.png) no-repeat left center;
+        }
+        .Validform_loading{
+            padding-left:20px;
+            background:url(../images/onLoad.gif) no-repeat left center;
+        }
+        .Validform_error{
+            background-color:#ffe7e7;
+        }
+        #Validform_msg{color:#7d8289; font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif; width:280px; -webkit-box-shadow:2px 2px 3px #aaa; -moz-box-shadow:2px 2px 3px #aaa; background:#fff; position:absolute; top:0px; right:50px; z-index:99999; display:none;filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#999999');}
+        #Validform_msg .iframe{position:absolute; left:0px; top:-1px; z-index:-1;}
+        #Validform_msg .Validform_title{line-height:25px; height:25px; text-align:left; font-weight:bold; padding:0 8px; color:#fff; position:relative; background-color:#000;}
+        #Validform_msg a.Validform_close:link,#Validform_msg a.Validform_close:visited{line-height:22px; position:absolute; right:8px; top:0px; color:#fff; text-decoration:none;}
+        #Validform_msg a.Validform_close:hover{color:#cc0;}
+        #Validform_msg .Validform_info{padding:8px;border:1px solid #000; border-top:none; text-align:left;}
+
+
+        .passwordStrength{
+
+        }
+        .passwordStrength b{
+            font-weight:normal;
+        }
+        .passwordStrength b,.passwordStrength span{
+            display:inline-block;
+            vertical-align:middle;
+            line-height:16px;
+            line-height:18px\9;
+            height:16px;
+        }
+        .passwordStrength span{
+            width:45px;
+            text-align:center;
+            background-color:#d0d0d0;
+            border-right:1px solid #fff;
+        }
+        .passwordStrength .last{
+            border-right:none;
+        }
+        .passwordStrength .bgStrength{
+            color:#fff;
+            background-color:#71b83d;
+        }
+
+
+    </style>
+    <link href="__ROOT__static/\layui\css/layui.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<form action="" method="post" class="" id="form1">
+    <!-- 注册 -->
+    <div class="login">
+
+        <!-- 表单项 -->
+
+        <div>用户名</div>
+        <div>
+            <input class="text" type="text" name="user_name" value="" datatype="*2-16" nullmsg="请填写用户名">
+            <span class="Validform_checktip"></span>
+        </div>
+        <div>密码</div>
+        <div>
+            <input class="text inputxt" type="password" name="user_password" datatype="*6-20"  plugin="passwordStrength" nullmsg="请填写密码" errormsg="密码为6-20位">
+            <span class="Validform_checktip"></span>
+        </div>
+        <div class="passwordStrength"><b>密码强度：</b> <span>弱</span><span>中</span><span class="last">强</span></div>
+        <div>确认密码</div>
+        <div>
+            <input class="text " type="password" name="repassword" datatype="*" nullmsg="请填确认密码" errormsg="您两次输入的密码不一致" recheck="user_password">
+            <span class="Validform_checktip"></span>
+        </div>
+
+        <div>邮箱</div>
+        <div>
+            <input class="text" type="text" name="email" value="" datatype="e" nullmsg="请填写邮箱" errormsg="请填写正确格式的邮箱" ajaxurl="{:url('Index/index')}">
+            <span class="Validform_checktip"></span>
+        </div>
+
+        <div>qq</div>
+        <div>
+            <input class="text" type="text" name="qq" value="" datatype="*6-20" nullmsg="请填写邮箱qq" errormsg="qq密码为6-20位" ajaxurl="{:url('Index/index')}">
+            <span class="Validform_checktip"></span>
+        </div>
+        <div>省份证</div>
+        <div>
+            <input type="text" value="" name="name" class="inputxt" datatype="idcard" nullmsg="请填写身份证号码！" errormsg="您填写的身份证号码不对！" />
+            <span class="Validform_checktip">这里会对身份证号码严格验证，请输入真实身份证号码</span>
+        </div>
+        <div>验证码</div>
+        <div>
+            <input class="verify Validform_error" type="text" name="seccodeverify" datatype="*5-5" nullmsg="请填写验证码" errormsg="请填写5位验证码" autocomplete="off">
+            <a href="javascript:void(0)" class="reloadverify" title="换一张">换一张？</a><span class="Validform_checktip"></span><br>
+            <img class="verifyimg reloadverify" src="{:captcha_src()}" alt="点击切换">
+        </div>
+        <div>&nbsp;</div>
+        <div>
+            <input type="submit" value="完成" >
+            <!--<input type="hidden" name="url" value="{:url('Index/reg')}"/>-->
+        </div>
+
+    </div>
+    <!-- /注册 -->
+    <!-- /其他登陆 -->
+</form>
+
+
+
+
+<form class="layui-form" action="post" id="form">
+
+    <!--<div>用户名</div>-->
+    <!--<div>-->
+        <!--<input class="text" type="text" name="user_name" value="" datatype="*2-16" nullmsg="请填写用户名">-->
+        <!--<span class="Validform_checktip"></span>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" name="user_name" value="" datatype="*2-16" nullmsg="请填写用户名">
+        </div>
+    </div>
+
+
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">输入框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="text" name="title" required  lay-verify="required" lay-filter="sdfsdfs" placeholder="请输入标题" title="请输入标题" autocomplete="off" class="layui-input">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">密码框</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<input type="password" name="password" required lay-verify="required" placeholder="请输入密码" title="请输入标题" autocomplete="off" class="layui-input">-->
+        <!--</div>-->
+        <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">选择框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<select name="city" lay-verify="required">-->
+                <!--<option value=""></option>-->
+                <!--<option value="0">北京</option>-->
+                <!--<option value="1">上海</option>-->
+                <!--<option value="2">广州</option>-->
+                <!--<option value="3">深圳</option>-->
+                <!--<option value="4">杭州</option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">复选框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="checkbox" name="like[write]" title="写作">-->
+            <!--<input type="checkbox" name="like[read]" title="阅读" checked>-->
+            <!--<input type="checkbox" name="like[dai]" title="发呆">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">开关</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="checkbox" name="switch" lay-skin="switch" lay-text="s|k">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">单选框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="radio" name="sex" value="男" title="男">-->
+            <!--<input type="radio" name="sex" value="女" title="女" checked>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item layui-form-text">-->
+        <!--<label class="layui-form-label">文本域</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+
+
+</body>
+<script type="text/javascript" charset="utf-8" src="{:__HJS__}/jquery.min.js"></script>
+<!--<script type="text/javascript" src="http://validform.rjboy.cn/Validform/v5.1/Validform_v5.1_min.js"></script>-->
+<!--<script type="text/javascript" src="http://validform.rjboy.cn/Validform/v5.1/Validform_v5.1_min.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="{:__HJS__}/version 5.3.2.js"></script>
+<script type="text/javascript" charset="utf-8" src="{:__HJS__}/passwordStrength-min.js"></script>
+<script src="__ROOT__static/layui/lay/dest/layui.all.js"></script>
+<script>
+    //全局的form验证(http://validform.rjboy.cn/document.html#getstart)
+    $('#form').Validform({
+        postonce : true,
+        tiptype : 3,//1、2、3、4和function函数，默认tiptype为1。
+        showAllError:true,//全部显示
+        usePlugin:{
+            passwordstrength:{
+                minLen:6,
+                maxLen:20
+            }
+        },
+        ajaxPost:true
+    });
+</script>
+</html>

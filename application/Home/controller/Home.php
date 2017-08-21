@@ -3,8 +3,43 @@ namespace app\Home\controller;
 use think\Controller;
 use think\Validate;
 use think\Cache;
-class Index extends Controller
+class Home extends Controller
 {
+    public function __construct(){
+        parent::__construct();
+        $rule = [
+            'email'   => 'email',
+        ];
+
+        $msg = [
+            'email.email' => '用户存在',
+        ];
+//        var_dump($_POST);
+        //post到的值
+        if($_POST){
+            $data['email']=$_POST['param'];
+            //实例化Validate类
+            $validate = new Validate($rule, $msg);
+            //把post到的值与Validate类里的$rule验证，不符合就返回false，batch()表示验证全部；
+            $result   = $validate->batch()->check($data);
+            //不符合就返回$msg数组；
+            $error=$validate->getError();
+        }
+        if(Request()->instance()->isAjax()){
+
+            if(null !=$result){
+                $data['info']='对';
+                $data['status']='y';
+                return json($data)->send();//$json是数组
+            }else{
+                //                dump(json($error));
+
+                $data['info']=$error['email'];
+                $data['status']='n';
+                return json($data)->send();//$json是数组
+            }
+        }
+    }
     public function index()
     {
 //        $value=Db('user')->where(array('id'=>1))->select();
@@ -27,7 +62,40 @@ class Index extends Controller
 //            ->select();
 //        var_dump($value);
 
+        $rule = [
+            'email'   => 'email',
+        ];
 
+        $msg = [
+            'email.email' => '用户存在',
+        ];
+//        var_dump($_POST);
+        //post到的值
+        if($_POST){
+            $data['email']=$_POST['param'];
+            //实例化Validate类
+            $validate = new Validate($rule, $msg);
+            //把post到的值与Validate类里的$rule验证，不符合就返回false，batch()表示验证全部；
+            $result   = $validate->batch()->check($data);
+            //不符合就返回$msg数组；
+            $error=$validate->getError();
+        }
+
+
+
+
+        if(Request()->instance()->isAjax()){
+            if(null !=$result){
+                $data['info']='对';
+                $data['status']='y';
+                return json($data);//$json是数组
+            }else{
+                //                dump(json($error));
+                $data['info']=$error['email'];
+                $data['status']='n';
+                return json($data);//$json是数组
+            }
+        }
 
         return $this->fetch();
     }
@@ -311,25 +379,5 @@ class Index extends Controller
     }
     public function login(){
         return $this->fetch();
-    }
-    //version验证
-    public function version(){
-        return $this->fetch();
-    }
-    //ajax 验证是否为合法省份证
-    public function isid(){
-        if(Request()->instance()->isAjax() && request()->isPost()){
-            $id=input('post.param');
-            $res=isCreditNo($id);
-            if($res){
-                $data['info']='对';
-                $data['status']='y';
-                return json($data);//$json是数组
-            }else{
-                $data['info']='请输入合法的省份证';
-                $data['status']='n';
-                return json($data);//$json是数组
-            }
-        };
     }
 }
