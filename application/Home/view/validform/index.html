@@ -81,7 +81,7 @@
 </head>
 
 <body>
-<form action="" method="post" class="" id="form1">
+<form action="" method="post" class="" id="form">
     <!-- 注册 -->
     <div class="login">
 
@@ -123,8 +123,8 @@
         <div>验证码</div>
         <div>
             <input class="verify Validform_error" type="text" name="seccodeverify" datatype="*5-5" nullmsg="请填写验证码" errormsg="请填写5位验证码" autocomplete="off">
-            <a href="javascript:void(0)" class="reloadverify" title="换一张">换一张？</a><span class="Validform_checktip"></span><br>
-            <img class="verifyimg reloadverify" src="{:captcha_src()}" alt="点击切换">
+            <a href="javascript:void(0)" class="reloadverify" title="换一张" onclick="javascript:document.getElementById('codeimage').src='{:captcha_src()}';">换一张？</a><span class="Validform_checktip"></span><br>
+            <img class="verifyimg reloadverify" src="{:captcha_src()}" alt="点击切换" id="codeimage" onclick="this.src='{:captcha_src()}'">
         </div>
         <div>&nbsp;</div>
         <div>
@@ -140,7 +140,7 @@
 
 
 
-<form class="layui-form" action="post" id="form">
+<form class="layui-form" action="" id="form1" method="post">
 
     <!--<div>用户名</div>-->
     <!--<div>-->
@@ -150,11 +150,16 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">用户名</label>
-        <div class="layui-input-block">
-            <input class="layui-input" type="text" name="user_name" value="" datatype="*2-16" nullmsg="请填写用户名">
+        <div class="layui-input-inline">
+            <input class="layui-input" type="text" name="user_name" value="" datatype="*" nullmsg="请填写用户名">
         </div>
     </div>
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" type="text" name="user_password" value="" datatype="*" nullmsg="请填写用户名">
+        </div>
+    </div>
 
 
     <!--<div class="layui-form-item">-->
@@ -231,8 +236,8 @@
     //全局的form验证(http://validform.rjboy.cn/document.html#getstart)
     $('#form').Validform({
         postonce : true,
-        tiptype : 3,//1、2、3、4和function函数，默认tiptype为1。
-        showAllError:true,//全部显示
+        tiptype : 1,//1、2、3、4和function函数，默认tiptype为1。
+//        showAllError:true,//全部显示
         usePlugin:{
             passwordstrength:{
                 minLen:6,
@@ -240,6 +245,19 @@
             }
         },
         ajaxPost:true
+    });
+    //全局的form验证(http://validform.rjboy.cn/document.html#getstart)
+    $('#form1').Validform({
+        postonce : true,
+        tiptype : 3,//1、2、3、4和function函数，默认tiptype为1。
+        showAllError:true,//全部显示
+        usePlugin:{
+            passwordstrength:{
+                minLen:6,
+                maxLen:20
+            }
+        }
+//        ajaxPost:true
     });
 </script>
 </html>

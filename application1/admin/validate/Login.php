@@ -33,7 +33,6 @@ class Login extends Validate
 
     ];
     public function isName($value,$rule,$data){
-        var_dump($data['value']['']);exit;
         if($value!=1){
             return false;
         }else{

@@ -68,7 +68,6 @@ class login extends Controller
         if ($this->request->isPost()) {
             $data = $this->request->only(['username', 'password', 'verify']);
             $validate_result=model('Admin')->login($data);
-            var_dump($validate_result['admin_username']);exit;
             if ($validate_result !== true) {
                 $this->error($validate_result);
             } else {

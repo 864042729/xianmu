@@ -27,5 +27,22 @@ class User extends Model
             dump($User->getError());
         }
     }
+    //登陆
+    function is_login($data){
+        $where=array();
+        $where['user_name']=$data['user_name'];
+        $user_info=$this->getInfo($where);
+        $User = new User;
 
+        dump($user['user_name']);exit;
+    }
+    //读取用户单条数据
+    function getInfo($where=array()){
+        $user = $this->get($where);
+        if($user){
+            return $user;
+        }else{
+           return  $user;
+        }
+    }
 }

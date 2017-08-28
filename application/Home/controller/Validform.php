@@ -12,7 +12,10 @@ class Validform extends Controller
 //            if(Request()->instance()->isAjax()){
 //                return json(1);
 //            }
-            $result = $this->validate($_POST, 'User');
+//            $result = $this->validate($_POST, 'User');
+            $mo_user=model('User');
+            $data=input('post.');
+            $result=$mo_user->is_login($data);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
