@@ -1,0 +1,171 @@
+<?php
+namespace app\layui\model;
+use think\Db;
+use think\Model;
+use think\Loader;
+
+class User extends Model
+{
+    //获取器  自动进行处理
+    public function getUserStatusAttr($value)
+    {
+        $status = [-1=>'删除',0=>'禁用',1=>'正常',2=>'待审核'];
+        return $status[$value];
+    }
+
+    //修改器   保存的数据库的时候自动处理
+    public function setUserPasswordAttr($value)
+    {
+        return md5($value);
+    }
+
+    /**
+     * 分页
+     */
+    public function pageQuery($pgaetotal){
+        $where = [];
+        input('user_name')?$where['user_name'] = input('user_name'):'';
+        $list=Db::name('user')->where($where)->paginate($pgaetotal);
+        return $list;
+    }
+
+    /**
+     * 注册一个新用户
+     * @param  array $data 用户注册信息
+     * @return integer|bool  注册成功返回主键，注册失败-返回false
+     */
+    public function register($data = [])
+    {
+        $user=[];
+        $user['user_name']=$data['user_name'];
+        $User_validate =  Loader::validate('User');
+        $result = $User_validate->scene('add')->check($data);
+        if(false === $result){
+            $this->error=$User_validate->getError();
+            return false;
+        }
+        Db::startTrans();
+        //头像上传
+        $user_pir=upload($data['user_pir'],'头像');
+        if($user_pir['code']!=200){
+            $this->error=$user_pir['msg'];
+            return false;
+        }
+        $user['user_password']=$data['user_password'];
+        $user['user_pir']=$user_pir['url'];
+        if(false !== $this->save($user)){
+            Db::commit();
+            $this->error='添加成功';
+            return true;
+        }else{
+            Db::rollback();
+            $this->error='添加失败';
+            return false;
+        }
+
+
+    }
+
+
+    /**
+     * 注册一个新用户
+     * @param  array $data 用户注册信息
+     * @return integer|bool  注册成功返回主键，注册失败-返回false
+     */
+    public function edit($data = [])
+    {
+        $user_info=$this->get($data['id']);
+        if(!$user_info){
+            $this->error='用户不存在';
+            return false;
+        }
+        Db::startTrans();
+        $User_validate =  Loader::validate('User');
+        $result = $User_validate->scene('edit')->check($data);
+
+        if(false === $result){
+            $this->error=$User_validate->getError();
+            return false;
+        }
+        $user=[];
+        $data['user_name']?$user['user_name']=$data['user_name']:'';
+        $data['user_password']?$user['user_password']= $data['user_password']:'';
+        $data['user_name']?$user['user_name']=$data['user_name']:'';
+        //头像上传
+        if($data['user_pir']){
+            $user_pir=upload($data['user_pir'],'头像');
+            if($user_pir['code']!=200){
+                $this->error=$user_pir['msg'];
+                return false;
+            }else{
+                $user['user_pir']=$user_pir['url'];
+            }
+        }
+//        $user['id']=;
+        if(false !== $this->save($user,['id' => $data['id']])){
+            Db::commit();
+            $this->error='添加成功';
+            return true;
+        }else{
+            Db::rollback();
+            $this->error='添加失败';
+            return false;
+        }
+
+
+    }
+
+
+
+    /**
+     * 获取用户信息
+     * @param  integer  $uid 用户主键
+     * @return array|integer 成功返回数组，失败-返回-1
+     */
+    public function info($where=array(),$field='*')
+    {
+        $user = $this->cache(true,60)->where($where)->field($field)->find();
+//       $user = User::get(1);
+// 通过获取器获取字段
+//        echo $user->status;
+// 获取原始字段数据
+//        echo $user->getData('status');
+// 获取全部原始数据
+//        dump($user->getData());
+        if ($user && 1 == $user->getData('user_status')) {
+
+            // 返回用户数据
+            return $user->hidden(['user_status'])->toArray();
+//            return $user->toArray();
+        } else {
+            $this->error = '用户不存在或被禁用';
+            return -1;
+        }
+    }
+
+    /**
+     * 获取用户角色
+     * @return integer 返回角色信息或者返回-1
+     */
+    public function role()
+    {
+        $uid = $this->getData('id');
+        if ($uid) {
+            $role = $this->getUserRole($uid);
+            if ($role) {
+                return $role;
+            } else {
+                $this->error = '用户未授权';
+                return 0;
+            }
+        } else {
+            $this->error = '请先登录';
+            return -1;
+        }
+    }
+
+    protected function getUserRole($uid)
+    {
+        return $this->table('role')->where('uid', $uid)->find();
+    }
+}
